@@ -7,7 +7,7 @@ SRC_DIR = src
 BUILD_DIR = build
 SOURCES = \
 	$(SRC_DIR)/startup_stm32f411ceu6.c\
-	$(SRC_DIR)/main.c\
+	$(SRC_DIR)/main.c
 BIN = $(BUILD_DIR)/craphal.elf
 
 all: $(BUILD_DIR)

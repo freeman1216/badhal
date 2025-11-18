@@ -338,7 +338,7 @@ CRAP_ILI9341_DEF void ili9341_fb_dma_fill(uint16_t* fb, uint16_t x_start, uint16
     ILI9341_ASSERT(width*length< UINT16_MAX);
     ILI9341_ASSERT( x_start < ILI9341_LCD_WIDTH && x_end < ILI9341_LCD_WIDTH && y_start < ILI9341_LCD_HEIGHT && y_end< ILI9341_LCD_HEIGHT);
     uint16_t buff_len = width*length;
-    nvic_enable_interrupt(DMA2_STREAM2_INTR);
+    nvic_enable_interrupt(ILI9341_NVIC_DMA_INTERRUPT);
     ili9341_send_cmd(0x2A); // column addr set
     ili9341_send_data(x_start>>8); 
     ili9341_send_data(x_start & 0xFF);
@@ -373,7 +373,7 @@ CRAP_ILI9341_DEF void ili9341_fb_dma_fill_centered(uint16_t* fb, uint16_t width,
     uint16_t y_end = y_start + height - 1;
     ILI9341_ASSERT(width*height< UINT16_MAX);
     uint16_t buff_len = (width * height);
-    nvic_enable_interrupt(DMA2_STREAM2_INTR);
+    nvic_enable_interrupt(ILI9341ILI9341_NVIC_DMA_INTERRUPT);
     ili9341_send_cmd(0x2A); // column addr set
     ili9341_send_data(x_start>>8); 
     ili9341_send_data(x_start & 0xFF);
