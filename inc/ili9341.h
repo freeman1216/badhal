@@ -373,7 +373,7 @@ CRAP_ILI9341_DEF void ili9341_fb_dma_fill_centered(uint16_t* fb, uint16_t width,
     uint16_t y_end = y_start + height - 1;
     ILI9341_ASSERT(width*height< UINT16_MAX);
     uint16_t buff_len = (width * height);
-    nvic_enable_interrupt(ILI9341ILI9341_NVIC_DMA_INTERRUPT);
+    nvic_enable_interrupt(ILI9341_NVIC_DMA_INTERRUPT);
     ili9341_send_cmd(0x2A); // column addr set
     ili9341_send_data(x_start>>8); 
     ili9341_send_data(x_start & 0xFF);
