@@ -172,7 +172,7 @@ void spi1_rx_isr(uint16_t data);
 STRONG_ISR(spi1_isr){
     if(SPI1->SR & SPI_SR_RXNE_MASK){
 #ifdef BAD_SPI_SPI1_USE_RXNE
-        spi1_rx_isr();
+        spi1_rx_isr(SPI->DR);
 #endif
     }
 }
