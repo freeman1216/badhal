@@ -1,7 +1,8 @@
 # BADHAL – Bare-Metal Drivers for STM32
 
 ## What is this?  
-BAD is a collection of simple, mostly header-only (stb style) drivers for STM32F411CEU6. Born out of frustration with conteporary libraries
+BADHAL (BAD) is basically just my personal collection of small, mostly header-only (stb-style) drivers for the STM32F411CEU6.
+Nothing fancy or production-ready, just code I wrote to make my life easier when working with the MCU.
 Includes:  
 - GPIO (`driver/io.h`) - easy pin setup, set/reset pins, configure alternate functions.  
 - NVIC (`driver/nvic.h`) - enable/disable interrupts, simple as that.  
@@ -19,7 +20,7 @@ Includes:
 - Startup (`startup_stm32f411ceu6.c`) - startup file, plain and simple
 - Simple linker script (`stm32f411ceu6.ld`)
 
-Most of the drivers dont support full range of features yet, they will be implemented as needed.
+Most of the drivers don’t cover every feature yet—just what I needed for my projects.
 ## How to use it  
 1. Include the header in your project.  
 2. If a driver has a `_IMPLEMENTATION` define, enable it in **one C file**, or use it statically:
@@ -28,7 +29,7 @@ Most of the drivers dont support full range of features yet, they will be implem
 #define BAD_IO_IMPLEMENTATION
 #include "io.h"
 ```
-3. Use the function!
+3. Use the function
 ```c
 // Configure PA5 as push-pull output
 io_setup_pin(GPIOA, 5,
