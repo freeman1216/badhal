@@ -121,14 +121,6 @@ typedef enum{
     USART_MISC_DMA_TRANSMIT = 0x80
 }USART_misc_t;
 
-BAD_USART_DEF void uart_enable(__IO USART_typedef_t* USART){
-    while (!(USART->SR & USART_SR_TC));
-    USART->CR1 |= USART_CR1_USART_ENABLE;
-}
-ALWAYS_INLINE void uart_disable(__IO USART_typedef_t * USART) {
-    while (!(USART->SR & USART_SR_TC));
-    USART->CR1 &= ~USART_CR1_USART_ENABLE;
-}
 
 ALWAYS_INLINE void uart_enable_misc(__IO USART_typedef_t * USART , USART_misc_t misc){
     USART->CR3 |= misc;
@@ -145,7 +137,8 @@ ALWAYS_INLINE void uart_enable_interrupts(__IO USART_typedef_t USART,USART_inter
 ALWAYS_INLINE void uart_disable_interrupts(__IO USART_typedef_t USART,USART_interrupt_flags_t interrupts){
     USART1->CR1 &= ~(interrupts);
 }
-
+BAD_USART_DEF void uart_enable(__IO USART_typedef_t* USART);
+BAD_USART_DEF void uart_disable(__IO USART_typedef_t * USART);
 BAD_USART_DEF void uart_putchar_polling(__IO USART_typedef_t*,char);
 BAD_USART_DEF char uart_getchar_polling(__IO USART_typedef_t*);
 BAD_USART_DEF void uart_setup(__IO USART_typedef_t * USART,
@@ -159,6 +152,14 @@ BAD_USART_DEF void uart_send_dec_unsigned_32bit(__IO USART_typedef_t *USART ,uin
 
 #ifdef BAD_USART_IMPLEMENTATION
 
+BAD_USART_DEF void uart_enable(__IO USART_typedef_t* USART){
+    while (!(USART->SR & USART_SR_TC));
+    USART->CR1 |= USART_CR1_USART_ENABLE;
+}
+BAD_USART_DEF void uart_disable(__IO USART_typedef_t * USART) {
+    while (!(USART->SR & USART_SR_TC));
+    USART->CR1 &= ~USART_CR1_USART_ENABLE;
+}
 
 BAD_USART_DEF void uart_putchar_polling(__IO USART_typedef_t* USART,char ch){
     while (!(USART->SR & USART_SR_TXE)); 
