@@ -1,24 +1,14 @@
-#include <stdint.h>
-
-#include "common.h"
-#include "nvic.h"
-#include "syscfg.h"
-
 #define BAD_RCC_IMPLEMENTATION
-#include "rcc.h"
-#include "flash.h"
+#define BAD_GPIO_IMPLEMENTATION
+#define BAD_TIMER_IMPLEMENTATION
+#define BAD_USART_IMPLEMENTATION
+#define BAD_FLASH_IMPLEMENTATION
 
-#define BAD_IO_IMPLEMENTATION
-#include "io.h"
 #define BTIMER_TIM1_UP_TIM10_ISR_IMPLEMENTATION
 #define BTIMER_USE_TIM10_USR
-#define BAD_TIMER_IMPLEMENTATION
-#include "basic_timer.h"
-
-#include "scb.h"
-
-#define BAD_USART_IMPLEMENTATION
-#include "uart.h"
+#define BAD_HARDFAULT_IMPLEMENTATION
+#define BAD_HARDFAULT_USE_UART
+#include "badhal.h"
 
 #define UART_GPIO_PORT          (GPIOA)
 #define UART1_TX_PIN            (9)

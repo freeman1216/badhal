@@ -1,5 +1,5 @@
 /* STARTUP */
-#include "common.h"
+#include "badhal.h"
 extern unsigned int __estack;
 
 extern unsigned int __rdata;
@@ -19,6 +19,13 @@ extern unsigned int __eramfunc;
 
 extern unsigned int __ram_ivt;
 extern unsigned int __eram_ivt;
+
+typedef void (*constructor_ptr)();
+
+extern constructor_ptr __init_array[];
+extern constructor_ptr __einit_array[];
+
+
 extern int main();
 
 void default_isr(){
@@ -105,6 +112,16 @@ static inline void ramfunc_init(){
     }
 }
 
+;
+
+static inline void constructors_init(){
+    constructor_ptr* constructors = __init_array;
+    while (constructors < __einit_array) {
+        (*constructors)();  // call the constructor
+        constructors++;
+    }
+}
+
 static inline void copy_ivt_to_ram();
 
 
@@ -113,6 +130,7 @@ void isr_reset(){
     bss_init();
     ramfunc_init();
     copy_ivt_to_ram();
+    constructors_init();
     main();
     while(1);
 };

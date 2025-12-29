@@ -1,13 +1,12 @@
 CC = arm-none-eabi-gcc
-CFLAGS = -ggdb -DBAD_HANDLERS_USE_UART -Wall -fjump-tables -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard
-LDFLAGS = -Tstm32f411ceu6.ld -nolibc --specs=nosys.specs -nostartfiles
-INCLUDES = -Iinc/ -Iinc/driver/
+CFLAGS = -ggdb -Wall -Wextra -fjump-tables -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+LDFLAGS = -Tstm32f411ceu6.ld -nolibc --specs=nosys.specs -nostartfiles  
+INCLUDES = -Iinc/
 
 SRC_DIR = src
 BUILD_DIR = build
 
-SOURCES = $(SRC_DIR)/startup_stm32f411ceu6.c \
-          $(SRC_DIR)/handlers.c
+SOURCES = $(SRC_DIR)/startup_stm32f411ceu6.c 
 
 MAIN_SRC = $(SOURCES) $(SRC_DIR)/main.c
 EXTI_SRC = $(SOURCES) tests/exti.c

@@ -1,14 +1,19 @@
-#include <stdint.h>
-
-#include "common.h"
-#include "nvic.h"
-
 #define BAD_RCC_IMPLEMENTATION
-#include "rcc.h"
-#include "flash.h"
+#define BAD_FLASH_IMPLEMENTATION
+#define BAD_GPIO_IMPLEMENTATION
+#define BAD_USART_IMPLEMENTATION
 
-#define BAD_IO_IMPLEMENTATION
-#include "io.h"
+#define BAD_HARDFAULT_ISR_IMPLEMENTATION
+#define BAD_HARDFAULT_USE_UART
+
+#define BAD_USART_IMPLEMENTATION
+#define BAD_ASSERT_IMPLEMENTATION
+#define BAD_ILI9341_STATIC
+#define BAD_ILI9341_INCLUDE_ISRS
+#define BAD_ILI9341_IMPLEMENTATION
+#define BAD_ILI9431_USE_ASSERT
+
+#include "ili9341.h"
 
 
 #define UART_GPIO_PORT          (GPIOA)
@@ -33,14 +38,6 @@
 #define EXTI1_GPIO_PORT (GPIOB)
 #define EXTI1_PIN       (1)
 
-#define BAD_USART_IMPLEMENTATION
-#include "uart.h"
-#define BAD_ASSERT_IMPLEMENTATION
-#define BAD_ILI9341_STATIC
-#define BAD_ILI9341_INCLUDE_ISRS
-#define BAD_ILI9341_IMPLEMENTATION
-#define BAD_ILI9431_USE_ASSERT
-#include "ili9341.h"
 
 
 #define EXTI_PORT   (SYSCFG_PBx)
@@ -70,6 +67,7 @@ static inline void __main_clock_setup(){
     rcc_enable_and_switch_to_pll();
 }
 
+
 static inline void __periph_setup(){
     rcc_set_ahb1_clocking(BAD_GB_AHB1_PERIPEHRALS);
     io_setup_pin(UART_GPIO_PORT, UART1_TX_PIN, MODER_af, UART1_TX_AF, OSPEEDR_high_speed, PUPDR_no_pull, OTYPR_push_pull);
@@ -85,7 +83,18 @@ static inline void __periph_setup(){
     rcc_set_apb2_clocking(BAD_GB_APB2_PERIPHERALS);
 }
 
-int main(){
+static __attribute__((noinline))void __gen_bitmap(uint16_t frame){
+    for (uint16_t y = 0; y < 240; y++) {
+        for (uint16_t x = 0; x < 240; x++) {
+            uint16_t r = ((x+frame) >> 3) & 0x1F;         
+            uint16_t g = ((y+frame) >> 2) & 0x3F;          
+            uint16_t b = ((x ^ y) >> 3) & 0x1F;    
+            random_bitmap[y * 240 + x] = (r << 11) | (g << 5) | b;
+        }
+    }
+}
+
+int __attribute__((noinline)) main(){
     __DISABLE_INTERUPTS;
     __main_clock_setup();
     __periph_setup();
@@ -99,14 +108,7 @@ int main(){
     ili9341_fill(0x0000);
     uint16_t frame = 0;
     while(1){
-        for (uint16_t y = 0; y < 240; y++) {
-            for (uint16_t x = 0; x < 240; x++) {
-                uint16_t r = ((x+frame) >> 3) & 0x1F;         
-                uint16_t g = ((y+frame) >> 2) & 0x3F;          
-                uint16_t b = ((x ^ y) >> 3) & 0x1F;    
-                random_bitmap[y * 240 + x] = (r << 11) | (g << 5) | b;
-            }
-        }
+        __gen_bitmap(frame);
         frame++;
         while(!ili9341_poll_dma_ready());
         ili9341_fb_dma_fill_centered(random_bitmap, 240, 240);

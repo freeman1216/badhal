@@ -1,22 +1,22 @@
 # BADHAL – Bare-Metal Drivers for STM32
 
 ## What is this?  
-BADHAL (BAD) is basically just my personal collection of small, mostly header-only (stb-style) drivers for the STM32F411CEU6.
+BADHAL is basically just my personal HAL for the STM32F411CEU6.
 Nothing fancy or production-ready, just code I wrote to make my life easier when working with the MCU.
+
 Includes:  
-- GPIO (`driver/io.h`) - easy pin setup, set/reset pins, configure alternate functions.  
-- NVIC (`driver/nvic.h`) - enable/disable interrupts, simple as that.  
-- SPI (`driver/spi.h`) -  SPI setup, DMA support.  
-- EXTI (`driver/exti.h`) - external interrupts with configurable trigger.  
+- GPIO - easy pin setup, set/reset pins, configure alternate functions.  
+- NVIC - enable/disable interrupts, simple as that.  
+- SPI -  SPI setup, DMA support.  
+- EXTI  - external interrupts with configurable trigger.  
 - Assert (`assert.h`) - prints messages over UART if things go wrong.  
 - ILI9341 (`ili9341.h`) - basic LCD driver with DMA framebuffer support.  
-- DMA (`driver/dma.h`) - DMA control and interrupts
-- UART (`driver/uart.h`) - Basic uart stuff
-- SYSCFG (`driver/syscfg.h`) - Syscfg, for now only for exti
-- Flash (`driver/flash.h`) - setup latency, caches, and prefetch.
-- RCC  (`driver/rcc.h`) - clock configuration 
-- Timers (`driver/timer.h`) - basic timer setup
-- Handlers (`handlers.c`) - for now only implements a hardfault that reports the registers state at fault
+- DMA - DMA control and interrupts
+- UART - Basic uart stuff
+- SYSCFG  - Syscfg, for now only for exti
+- Flash - setup latency, caches, and prefetch.
+- RCC  - clock configuration 
+- Timers - basic timer setup
 - Startup (`startup_stm32f411ceu6.c`) - startup file, plain and simple
 - Simple linker script (`stm32f411ceu6.ld`)
 
@@ -26,8 +26,8 @@ Most of the drivers don’t cover every feature yet—just what I needed for my 
 2. If a driver has a `_IMPLEMENTATION` define, enable it in **one C file**, or use it statically:
 
 ```c
-#define BAD_IO_IMPLEMENTATION
-#include "io.h"
+#define BAD_GPIO_IMPLEMENTATION
+#include "badhal.h"
 ```
 3. Use the function
 ```c

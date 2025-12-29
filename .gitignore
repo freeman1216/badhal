@@ -62,3 +62,4 @@ compile_commands.json
 .cache
 build/*
 *.svd
+src/gf2-prof.c

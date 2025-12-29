@@ -30,8 +30,7 @@
 #ifndef BAD_ASSERT_H
 #define BAD_ASSERT_H
 
-#include <stdint.h>
-#include "uart.h"
+#include "badhal.h"
 
 #ifndef ASSERT_UART
 #define ASSERT_UART USART1

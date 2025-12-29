@@ -1,17 +1,9 @@
-#include <stdint.h>
-
-#include "common.h"
-#include "nvic.h"
-#include "syscfg.h"
-
 #define BAD_RCC_IMPLEMENTATION
-#include "rcc.h"
-#include "flash.h"
-
-#define BAD_IO_IMPLEMENTATION
-#include "io.h"
-
+#define BAD_GPIO_IMPLEMENTATION
 #define BAD_EXTI_IMPLEMENTATION
+#define BAD_USART_IMPLEMENTATION
+#define BAD_FLASH_IMPLEMENTATION
+
 #define BAD_EXTI_EXTI0_ISR_IMPLEMENTATION
 #define BAD_EXTI_EXTI1_ISR_IMPLEMENTATION
 #define BAD_EXTI_EXTI2_ISR_IMPLEMENTATION
@@ -21,10 +13,9 @@
 #define BAD_EXTI_USE_EXTI_5_USER_ISR
 #define BAD_EXTI_USE_EXTI_6_USER_ISR
 #define BAD_EXTI_USE_EXTI_7_USER_ISR
-#include "exti.h"
-
-#define BAD_USART_IMPLEMENTATION
-#include "uart.h"
+#define BAD_HARDFAULT_ISR_IMPLEMENTATION
+#define BAD_HARDFAULT_USE_UART
+#include"badhal.h"
 
 #define UART_GPIO_PORT          (GPIOA)
 #define UART1_TX_PIN            (9)
@@ -43,13 +34,6 @@
 #define EXTI6_PIN       (6)
 #define EXTI7_PIN       (7)
 
-#define NVIC_EXTI_TEST_INTR (NVIC_EXTI0_INTR|\
-                            NVIC_EXTI1_INTR|\
-                            NVIC_EXTI2_INTR|\
-                            NVIC_EXTI3_INTR|\
-                            NVIC_EXTI4_INTR|\
-                            NVIC_EXTI4_INTR|\
-                            NVIC_EXTI9_5_INTR)
 
     // HSE  = 25
     // PLLM = 25

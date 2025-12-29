@@ -9,8 +9,9 @@ __estack = __eram;
 SECTIONS
 {
     .text : ALIGN(4)
-    {
+    {   __ivt_rom_start = .;
         KEEP(*(.ivt))
+        __ivt_rom_end = .;
         *(.text)
         . = ALIGN(4);
         __etext = .;
@@ -43,6 +44,27 @@ SECTIONS
         __ebss = .;
     } > RAM 
     
+
+    __rramfunc = LOADADDR(.ramfunc); /* data placed in rom */
+
+    .ramfunc :ALIGN(4)
+    {   
+        __ramfunc = .;
+        *(.ramfunc)
+        *(.text.memmove)
+        . = ALIGN(4);
+        __eramfunc = .;
+        
+    } >RAM AT > ROM
+
+    .init_array :ALIGN(4)
+    {  
+        __init_array = .;
+       *(.init_array)
+       . = ALIGN(4);
+        __einit_array = .;
+    } > ROM
+
     .rodata : ALIGN(4)
     {
         *(.rodata)

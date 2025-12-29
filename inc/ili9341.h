@@ -36,7 +36,7 @@
 
 #include <stdint.h>
 
-#include "nvic.h"
+
 
 #if defined (BAD_ILI9341_STATIC) && defined(BAD_ILI9341_IMPLEMENTATION)
 #define BAD_SPI_STATIC
@@ -52,13 +52,7 @@
 #define BAD_DMA_DMA2_STREAM2_ISR_IMPLEMENTATION
 #endif
 
-
-#include "io.h"
-
-#include "spi.h"
-
-
-#include "dma.h"
+#include "badhal.h"
 
 #ifdef BAD_ILI9431_USE_ASSERT
 #include "assert.h"
@@ -135,6 +129,7 @@ ALWAYS_INLINE void ili9341_dc_data(void)    { io_pin_set(ILI9341_GPIO_PORT, ILI9
 #ifdef BAD_ILI9341_INCLUDE_ISRS
 
 STRONG_USER_ISR(dma2_stream2_tc,uint16_t offset){
+    UNUSED(offset);
     ili9341_deselect();
     ili9341_spi_control_transmition_mode();
 } 
