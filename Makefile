@@ -13,12 +13,14 @@ EXTI_SRC = $(SOURCES) tests/exti.c
 TIMER_SRC = $(SOURCES) tests/timer.c
 RAMFUNC_SRC = $(SOURCES) tests/ramfunc.c
 IVTRELOC_SRC = $(SOURCES) tests/ivt_reloc.c
+UART_SRC = $(SOURCES) tests/uart.c
 
 MAIN_BIN = $(BUILD_DIR)/main.elf
 EXTI_BIN = $(BUILD_DIR)/exti.elf
 TIMER_BIN = $(BUILD_DIR)/timer.elf
 RAMFUNC_BIN = $(BUILD_DIR)/ramfunc.elf
 IVTRELOC_BIN = $(BUILD_DIR)/ivtreloc.elf
+UART_BIN = $(BUILD_DIR)/uart.elf
 
 
 PRIMARY_GOAL := $(firstword $(MAKECMDGOALS))
@@ -53,6 +55,9 @@ $(RAMFUNC_BIN): $(BUILD_DIR)
 $(IVTRELOC_BIN): $(BUILD_DIR)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(INCLUDES) $(IVTRELOC_SRC) -o $@
 
+$(UART_BIN): $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(INCLUDES) $(UART_SRC) -o $@
+
 .PHONY: main
 main: $(MAIN_BIN)
 
@@ -67,7 +72,10 @@ ramfunc:$(RAMFUNC_BIN)
 
 .PHONY: ivtreloc
 ivtreloc:$(IVTRELOC_BIN)
-	
+
+.PHONY: uart
+uart: $(UART_BIN)
+
 .PHONY: debug
 debug:
 ifeq ($(CURRBIN),)

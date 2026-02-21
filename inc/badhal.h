@@ -474,7 +474,7 @@ extern inline void rcc_set_apb1_clocking(RCC_APB1_peripherals_t apb1_mask){
     RCC->APB1ENR = apb1_mask;
 }
 
-extern inline void rcc_set_apb2_clocking(RCC_APB1_peripherals_t apb2_mask){
+extern inline void rcc_set_apb2_clocking(RCC_APB2_peripherals_t apb2_mask){
     RCC->APB2ENR = apb2_mask;
 }
 
@@ -848,20 +848,16 @@ BAD_USART_DEF void uart_send_hex_32bit(__IO USART_typedef_t* USART,uint32_t valu
 
 BAD_USART_DEF void uart_send_dec_unsigned_32bit(__IO USART_typedef_t *USART ,uint32_t value){
     char buff[11];
-    uint8_t idx = 0;
-    
+    char *write = buff+11;
+    *--write = 0;
+
     do{ 
-        buff[idx] = (value%10)+'0';
+        *--write = (value%10)+'0';
         value/=10;
-        idx++;
     }
     while (value!=0);
-    
-    idx --;
 
-    for(;idx!=0xFF;idx--){
-        uart_putchar_polling(USART,buff[idx]);
-    }
+    uart_send_str_polling(USART, write);
     uart_send_str_polling(USART, "\r\n");
 }
 #endif
@@ -1438,7 +1434,7 @@ void __attribute__((naked)) isr_hardfault(){
     );
 }
 
-void hardfault_c(uint32_t* stack){
+void __attribute__((used)) hardfault_c(uint32_t* stack){
     volatile uint32_t r0  = stack[0];
     volatile uint32_t r1  = stack[1];
     volatile uint32_t r2  = stack[2];
@@ -1510,6 +1506,17 @@ void hardfault_c(uint32_t* stack){
     }
 }
 
+
+#endif
+
+//Systick
+#ifdef  BAD_SYSTICK_SYSTICK_ISR_IMPLEMENTATION
+
+void systick_usr();
+
+STRONG_ISR(systick_isr){
+    systick_usr();
+}
 
 #endif
 

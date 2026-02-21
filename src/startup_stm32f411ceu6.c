@@ -89,6 +89,9 @@ WEAK_ISR(i2c3_er_isr);
 WEAK_ISR(fpu_isr);
 WEAK_ISR(spi4_isr);
 WEAK_ISR(spi5_isr);
+WEAK_ISR(pendsv_isr);
+WEAK_ISR(systick_isr);
+WEAK_ISR(svc_isr);
 
 static inline void data_init(){ 
     unsigned int *src = &__rdata;
@@ -97,6 +100,7 @@ static inline void data_init(){
         *dest++ = *src++;
     }
 }
+
 static inline void bss_init(){
     unsigned int *src = &__bss;
     while (src<&__ebss) {
@@ -112,8 +116,6 @@ static inline void ramfunc_init(){
     }
 }
 
-;
-
 static inline void constructors_init(){
     constructor_ptr* constructors = __init_array;
     while (constructors < __einit_array) {
@@ -125,7 +127,7 @@ static inline void constructors_init(){
 static inline void copy_ivt_to_ram();
 
 
-void isr_reset(){
+void __attribute__((noreturn)) isr_reset(){
     data_init();
     bss_init();
     ramfunc_init();
@@ -149,11 +151,11 @@ const isr_addr_t ivt_table[IVT_SIZE] __attribute__((used,section(".ivt")))={
     0,
     0,
     0,
-    isr_hardfault,
+    svc_isr,
     isr_hardfault,
     0,
-    isr_hardfault,
-    isr_hardfault,
+    pendsv_isr,
+    systick_isr,
     wwdg_isr,
     pvd_isr,
     tamp_stamp_isr,
