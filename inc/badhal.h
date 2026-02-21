@@ -39,11 +39,11 @@
 #define UNUSED(x) (void)x
 
 #define OPT_BARRIER asm volatile("": : :"memory")
-#define DSB __asm volatile("dsb")
-#define DMB __asm volatile("dmb")
-#define ISB __asm volatile("isb")
-#define __ENABLE_INTERUPTS __asm volatile ("cpsie i")
-#define __DISABLE_INTERUPTS __asm volatile ("cpsid i")
+#define DSB __asm volatile("dsb":::"memory")
+#define DMB __asm volatile("dmb":::"memory")
+#define ISB __asm volatile("isb":::"memory")
+#define __ENABLE_INTERUPTS __asm volatile ("cpsie i":::"memory")
+#define __DISABLE_INTERUPTS __asm volatile ("cpsid i":::"memory")
 
 //Core
 
