@@ -1,3 +1,11 @@
+#define BAD_PLLM (25)
+#define BAD_PLLN (400)
+#define BAD_PLLQ (10)
+
+#define BAD_AHB_PRE     (HPRE_DIV_1)
+#define BAD_APB1_PRE    (PPRE_DIV_2)
+#define BAD_APB2_PRE    (PPRE_DIV_1)
+
 #define BAD_RCC_IMPLEMENTATION
 #define BAD_GPIO_IMPLEMENTATION
 #define BAD_EXTI_IMPLEMENTATION
@@ -90,11 +98,8 @@ void exti7_usr(){
 }
 
 static inline void __main_clock_setup(){
-    rcc_enable_hse();
-    rcc_pll_setup( PLLP4, BADHAL_PLLM, BADHAL_PLLN, BADHAL_PLLQ, PLL_SOURCE_HSE);
-    rcc_bus_prescalers_setup(HPRE_DIV_1, PPRE_DIV_2, PPRE_DIV_1);
     flash_acceleration_setup(BADHAL_FLASH_LATENCY, FLASH_DCACHE_ENABLE, FLASH_ICACHE_ENABLE);
-    rcc_enable_and_switch_to_pll();
+    rcc_sysclock_setup();
 }
 
 static inline void __periph_setup(){

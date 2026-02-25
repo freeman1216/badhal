@@ -1,4 +1,12 @@
-#include <stdint.h>
+#define BAD_PLLM (25)
+#define BAD_PLLN (400)
+#define BAD_PLLQ (10)
+#define BAD_PLLP (PLLP4)
+
+#define BAD_AHB_PRE     (HPRE_DIV_1)
+#define BAD_APB1_PRE    (PPRE_DIV_2)
+#define BAD_APB2_PRE    (PPRE_DIV_1)
+
 #define BAD_RCC_IMPLEMENTATION
 #define BAD_GPIO_IMPLEMENTATION
 #define BAD_TIMER_IMPLEMENTATION
@@ -10,7 +18,6 @@
 #define BAD_HARDFAULT_IMPLEMENTATION
 #define BAD_HARDFAULT_USE_UART
 #include "badhal.h"
-
 
 #define UART_GPIO_PORT          (GPIOA)
 #define UART1_TX_PIN            (9)
